@@ -81,7 +81,7 @@ jobs:
 
       - name: Build dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
-        run: .\build.bat deps
+        run: .\build.bat deps external_plugins
 
       - name: Install Rime plugins
         run: .\action-install-plugins-windows.bat
