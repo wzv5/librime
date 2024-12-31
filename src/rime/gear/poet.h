@@ -23,7 +23,7 @@ class Grammar;
 class Language;
 struct Line;
 
-class Poet {
+class RIME_DLL Poet {
  public:
   // Line "less", used to compare composed line of the same input range.
   using Compare = function<bool(const Line&, const Line&)>;

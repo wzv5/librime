@@ -18,7 +18,7 @@ struct Preedit {
   size_t sel_end = 0;
 };
 
-class Composition : public Segmentation {
+class RIME_DLL Composition : public Segmentation {
  public:
   Composition() = default;
 
@@ -29,7 +29,7 @@ class Composition : public Segmentation {
   string GetPrompt() const;
   string GetCommitText() const;
   string GetScriptText(bool keep_selection = true) const;
-  RIME_DLL string GetDebugText() const;
+  string GetDebugText() const;
   // Returns text of the last segment before the given position.
   string GetTextBefore(size_t pos) const;
 };

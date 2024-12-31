@@ -15,7 +15,7 @@
 
 namespace rime {
 
-class UserDictEntryIterator : public DictEntryFilterBinder {
+class RIME_DLL UserDictEntryIterator : public DictEntryFilterBinder {
  public:
   UserDictEntryIterator() = default;
 
@@ -46,7 +46,7 @@ struct SyllableGraph;
 struct DfsState;
 struct Ticket;
 
-class UserDictionary : public Class<UserDictionary, const Ticket&> {
+class RIME_DLL UserDictionary : public Class<UserDictionary, const Ticket&> {
  public:
   UserDictionary(const string& name, an<Db> db);
   virtual ~UserDictionary();

@@ -1,7 +1,7 @@
 set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/c_flag_overrides.cmake)
 set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(rime)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -32,6 +32,9 @@ set(RIME_PLUGINS_DIR "rime-plugins" CACHE STRING "Target directory for externall
 
 if(WIN32)
   set(ext ".exe")
+  if(ENABLE_EXTERNAL_PLUGINS)
+    set(MSVC_SHARED_RT ON)
+  endif()
 endif(WIN32)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")

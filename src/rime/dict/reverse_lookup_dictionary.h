@@ -37,7 +37,7 @@ struct Metadata {
 struct Ticket;
 class DictSettings;
 
-class ReverseDb : public MappedFile {
+class RIME_DLL ReverseDb : public MappedFile {
  public:
   explicit ReverseDb(const path& file_path);
 
@@ -60,7 +60,7 @@ class ReverseDb : public MappedFile {
   the<StringTable> value_trie_;
 };
 
-class ReverseLookupDictionary
+class RIME_DLL ReverseLookupDictionary
     : public Class<ReverseLookupDictionary, const Ticket&> {
  public:
   explicit ReverseLookupDictionary(an<ReverseDb> db);
@@ -75,7 +75,7 @@ class ReverseLookupDictionary
 
 class ResourceResolver;
 
-class ReverseLookupDictionaryComponent
+class RIME_DLL ReverseLookupDictionaryComponent
     : public ReverseLookupDictionary::Component,
       protected DbPool<ReverseDb> {
  public:

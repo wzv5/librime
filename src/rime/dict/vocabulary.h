@@ -18,7 +18,7 @@ using Syllabary = set<string>;
 
 using SyllableId = int32_t;
 
-class Code : public vector<SyllableId> {
+class RIME_DLL Code : public vector<SyllableId> {
  public:
   Code() = default;
   Code(const Code::const_iterator& begin, const Code::const_iterator& end)

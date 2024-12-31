@@ -32,7 +32,7 @@ struct CommitEntry : DictEntry {
   bool Save() const;
 };
 
-class Memory {
+class RIME_DLL Memory {
  public:
   Memory(const Ticket& ticket);
   virtual ~Memory();
