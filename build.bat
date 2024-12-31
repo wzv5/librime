@@ -108,9 +108,11 @@ if defined PLATFORM_TOOLSET (
 if "%enable_external_plugins%" == "ON" (
   set "msvc_rt=MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
   set msvc_shared_rt=ON
+  set msvc_rt_lib=msvcrt
 ) else (
   set "msvc_rt=MultiThreaded$<$<CONFIG:Debug>:Debug>"
   set msvc_shared_rt=OFF
+  set msvc_rt_lib=libcmt
 )
 
 set common_cmake_flags=%common_cmake_flags%^
@@ -118,6 +120,7 @@ set common_cmake_flags=%common_cmake_flags%^
   -DCMAKE_BUILD_TYPE:STRING="%build_config%"^
   -DCMAKE_USER_MAKE_RULES_OVERRIDE:PATH="%RIME_ROOT%\cmake\c_flag_overrides.cmake"^
   -DCMAKE_USER_MAKE_RULES_OVERRIDE_CXX:PATH="%RIME_ROOT%\cmake\cxx_flag_overrides.cmake"^
+  -DCMAKE_EXE_LINKER_FLAGS_INIT:STRING="-l%msvc_rt_lib%"^
   -DCMAKE_MSVC_RUNTIME_LIBRARY="%msvc_rt%"^
   -DMSVC_SHARED_RT=%msvc_shared_rt%
 
