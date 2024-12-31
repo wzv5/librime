@@ -161,7 +161,8 @@ if %build_deps% == 1 (
   echo building gtest.
   pushd deps\googletest
   cmake . -B%build_dir% %deps_cmake_flags%^
-  -DBUILD_GMOCK:BOOL=OFF
+  -DBUILD_GMOCK:BOOL=OFF^
+  -Dgtest_force_shared_crt=%msvc_shared_rt%
   if errorlevel 1 goto error
   cmake --build %build_dir% --config %build_config% --target install
   if errorlevel 1 goto error

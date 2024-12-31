@@ -18,7 +18,7 @@ using Syllabary = set<string>;
 
 using SyllableId = int32_t;
 
-class RIME_DLL Code : public vector<SyllableId> {
+class Code : public vector<SyllableId> {
  public:
   Code() = default;
   Code(const Code::const_iterator& begin, const Code::const_iterator& end)
@@ -31,7 +31,7 @@ class RIME_DLL Code : public vector<SyllableId> {
 
   void CreateIndex(Code* index_code);
 
-  string ToString() const;
+  RIME_DLL string ToString() const;
 };
 
 struct ShortDictEntry {

@@ -20,9 +20,9 @@ namespace rime {
 
 //
 
-class RIME_DLL Patterns : public vector<boost::regex> {
+class Patterns : public vector<boost::regex> {
  public:
-  bool Load(an<ConfigList> patterns);
+  RIME_DLL bool Load(an<ConfigList> patterns);
 };
 
 //
