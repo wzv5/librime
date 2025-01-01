@@ -22,7 +22,8 @@ jobs:
         include:
           - { compiler: msvc, cc: cl, cxx: cl }
           - { compiler: clang, cc: clang, cxx: clang++ }
-          - { compiler: msvc, arch: x86, cross_arch: x64_x86 }
+          - { compiler: msvc, arch: x86, cross_arch: x64_x86, external_plugins: true }
+          - { compiler: msvc, arch: x86, cross_arch: x64_x86, external_plugins: false }
         exclude:
           - compiler: clang
             external_plugins: true
