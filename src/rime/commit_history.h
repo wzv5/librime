@@ -30,7 +30,7 @@ class CommitHistory : public list<CommitRecord> {
   RIME_DLL void Push(const KeyEvent& key_event);
   RIME_DLL void Push(const Composition& composition, const string& input);
   RIME_DLL string repr() const;
-  RIME_DLL string latest_text() const { return empty() ? string() : back().text; }
+  RIME_DLL string latest_text() const;
 };
 
 }  // Namespace rime
