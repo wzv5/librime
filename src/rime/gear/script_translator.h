@@ -28,10 +28,10 @@ class ScriptTranslator : public Translator,
                          public Memory,
                          public TranslatorOptions {
  public:
-  ScriptTranslator(const Ticket& ticket);
+  RIME_DLL ScriptTranslator(const Ticket& ticket);
 
-  virtual an<Translation> Query(const string& input, const Segment& segment);
-  virtual bool Memorize(const CommitEntry& commit_entry);
+  RIME_DLL virtual an<Translation> Query(const string& input, const Segment& segment);
+  RIME_DLL virtual bool Memorize(const CommitEntry& commit_entry);
 
   string FormatPreedit(const string& preedit);
   string Spell(const Code& code);

@@ -12,7 +12,7 @@
 
 namespace rime {
 
-class Schema {
+class RIME_DLL Schema {
  public:
   Schema();
   explicit Schema(const string& schema_id);

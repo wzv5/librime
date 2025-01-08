@@ -22,12 +22,12 @@ namespace rime {
 
 class Patterns : public vector<boost::regex> {
  public:
-  bool Load(an<ConfigList> patterns);
+  RIME_DLL bool Load(an<ConfigList> patterns);
 };
 
 //
 
-class Spans {
+class RIME_DLL Spans {
  public:
   void AddVertex(size_t vertex);
   void AddSpan(size_t start, size_t end);

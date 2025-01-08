@@ -18,10 +18,15 @@ jobs:
       matrix:
         compiler: [msvc, clang]
         arch: [x64]
+        external_plugins: [true, false]
         include:
           - { compiler: msvc, cc: cl, cxx: cl }
           - { compiler: clang, cc: clang, cxx: clang++ }
-          - { compiler: msvc, arch: x86, cross_arch: x64_x86 }
+          - { compiler: msvc, arch: x86, cross_arch: x64_x86, external_plugins: true }
+          - { compiler: msvc, arch: x86, cross_arch: x64_x86, external_plugins: false }
+        exclude:
+          - compiler: clang
+            external_plugins: true
     env:
       boost_version: 1.84.0
       BOOST_ROOT: ${{ github.workspace }}\deps\boost-1.84.0
@@ -64,6 +69,11 @@ jobs:
           $git_ref_name = git describe --always
           echo "git_ref_name=$git_ref_name" >> $env:GITHUB_ENV
           git submodule > submodule-status
+          if ("${{ matrix.external_plugins }}" -eq "true") {
+            echo "build_arg=external_plugins" >> $env:GITHUB_ENV
+          } else {
+            echo "build_arg=no_external_plugins" >> $env:GITHUB_ENV
+          }
 
       - name: Install boost
         run: .\install-boost.bat
@@ -77,32 +87,32 @@ jobs:
             include
             lib
             share
-          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ hashFiles('submodule-status') }}
+          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ hashFiles('submodule-status') }}-${{ env.build_arg }}
 
       - name: Build dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
-        run: .\build.bat deps
+        run: .\build.bat deps ${{ env.build_arg }}
 
       - name: Install Rime plugins
         run: .\action-install-plugins-windows.bat
 
       - name: Build and test
-        run: .\build.bat test
+        run: .\build.bat test ${{ env.build_arg }}
 
       - name: Create distributable
         run: |
-          7z a rime-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}.7z `
+          7z a rime-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ env.build_arg }}.7z `
           dist version-info.txt
-          7z a -x'!*/.placeholder' rime-deps-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}.7z `
+          7z a -x'!*/.placeholder' rime-deps-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ env.build_arg }}.7z `
           bin include lib share
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}
+          name: artifact-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ env.build_arg }}
           path: |
-            rime-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}.7z
-            rime-deps-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}.7z
+            rime-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ env.build_arg }}.7z
+            rime-deps-${{ env.git_ref_name }}-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.arch }}-${{ env.build_arg }}.7z
 
   build-mingw:
     runs-on: windows-latest

@@ -26,10 +26,10 @@ class TableTranslator : public Translator,
                         public Memory,
                         public TranslatorOptions {
  public:
-  TableTranslator(const Ticket& ticket);
+  RIME_DLL TableTranslator(const Ticket& ticket);
 
-  virtual an<Translation> Query(const string& input, const Segment& segment);
-  virtual bool Memorize(const CommitEntry& commit_entry);
+  RIME_DLL virtual an<Translation> Query(const string& input, const Segment& segment);
+  RIME_DLL virtual bool Memorize(const CommitEntry& commit_entry);
 
   an<Translation> MakeSentence(const string& input,
                                size_t start,

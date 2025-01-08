@@ -17,7 +17,7 @@ class Config;
 class Context;
 class Translator;
 
-class Switcher : public Processor, public Engine {
+class RIME_DLL Switcher : public Processor, public Engine {
  public:
   Switcher(const Ticket& ticket);
   virtual ~Switcher();

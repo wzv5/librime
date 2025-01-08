@@ -12,7 +12,7 @@ namespace rime {
 struct Segment;
 struct Ticket;
 
-class TagMatching {
+class RIME_DLL TagMatching {
  public:
   explicit TagMatching(const Ticket& ticket);
   bool TagsMatch(Segment* segment);

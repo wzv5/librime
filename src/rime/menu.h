@@ -24,15 +24,15 @@ class Filter;
 class MergedTranslation;
 class Translation;
 
-class Menu {
+class RIME_DLL Menu {
  public:
-  RIME_DLL Menu();
+  Menu();
 
-  RIME_DLL void AddTranslation(an<Translation> translation);
+  void AddTranslation(an<Translation> translation);
   void AddFilter(Filter* filter);
 
-  RIME_DLL size_t Prepare(size_t candidate_count);
-  RIME_DLL Page* CreatePage(size_t page_size, size_t page_no);
+  size_t Prepare(size_t candidate_count);
+  Page* CreatePage(size_t page_size, size_t page_no);
   an<Candidate> GetCandidateAt(size_t index);
 
   // CAVEAT: returns the number of candidates currently obtained,

@@ -33,6 +33,7 @@ set build_shared=ON
 set build_test=OFF
 set clean=0
 set enable_logging=ON
+set enable_external_plugins=OFF
 
 :parse_cmdline_options
 if "%1" == "" goto end_parsing_cmdline_options
@@ -64,6 +65,12 @@ if "%1" == "logging" (
 )
 if "%1" == "nologging" (
   set enable_logging=OFF
+)
+if "%1" == "external_plugins" (
+  set enable_external_plugins=ON
+)
+if "%1" == "no_external_plugins" (
+  set enable_external_plugins=OFF
 )
 shift
 goto parse_cmdline_options
@@ -98,14 +105,24 @@ if defined ARCH (
 if defined PLATFORM_TOOLSET (
   set common_cmake_flags=%common_cmake_flags% -T%PLATFORM_TOOLSET%
 )
+if "%enable_external_plugins%" == "ON" (
+  set "msvc_rt=MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+  set msvc_shared_rt=ON
+  set msvc_rt_lib=msvcrt
+) else (
+  set "msvc_rt=MultiThreaded$<$<CONFIG:Debug>:Debug>"
+  set msvc_shared_rt=OFF
+  set msvc_rt_lib=libcmt
+)
 
 set common_cmake_flags=%common_cmake_flags%^
   -DCMAKE_CONFIGURATION_TYPES:STRING="%build_config%"^
   -DCMAKE_BUILD_TYPE:STRING="%build_config%"^
   -DCMAKE_USER_MAKE_RULES_OVERRIDE:PATH="%RIME_ROOT%\cmake\c_flag_overrides.cmake"^
   -DCMAKE_USER_MAKE_RULES_OVERRIDE_CXX:PATH="%RIME_ROOT%\cmake\cxx_flag_overrides.cmake"^
-  -DCMAKE_EXE_LINKER_FLAGS_INIT:STRING="-llibcmt"^
-  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>"
+  -DCMAKE_EXE_LINKER_FLAGS_INIT:STRING="-l%msvc_rt_lib%"^
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="%msvc_rt%"^
+  -DMSVC_SHARED_RT=%msvc_shared_rt%
 
 set deps_cmake_flags=%common_cmake_flags%^
   -DBUILD_SHARED_LIBS:BOOL=OFF^
@@ -135,8 +152,7 @@ if %build_deps% == 1 (
   echo building yaml-cpp.
   pushd deps\yaml-cpp
   cmake . -B%build_dir% %deps_cmake_flags%^
-  -DMSVC_SHARED_RT:BOOL=OFF^
-  -DYAML_MSVC_SHARED_RT:BOOL=OFF^
+  -DYAML_MSVC_SHARED_RT:BOOL=%msvc_shared_rt%^
   -DYAML_CPP_BUILD_CONTRIB:BOOL=OFF^
   -DYAML_CPP_BUILD_TESTS:BOOL=OFF^
   -DYAML_CPP_BUILD_TOOLS:BOOL=OFF
@@ -148,7 +164,8 @@ if %build_deps% == 1 (
   echo building gtest.
   pushd deps\googletest
   cmake . -B%build_dir% %deps_cmake_flags%^
-  -DBUILD_GMOCK:BOOL=OFF
+  -DBUILD_GMOCK:BOOL=OFF^
+  -Dgtest_force_shared_crt=%msvc_shared_rt%
   if errorlevel 1 goto error
   cmake --build %build_dir% --config %build_config% --target install
   if errorlevel 1 goto error
@@ -177,11 +194,18 @@ if %build_deps% == 1 (
 
 if %build_librime% == 0 goto exit
 
+if "%enable_external_plugins%" == "ON" (
+  set merged_plugins=OFF
+) else (
+  set merged_plugins=ON
+)
 set rime_cmake_flags=%common_cmake_flags%^
  -DBUILD_STATIC=ON^
  -DBUILD_SHARED_LIBS=%build_shared%^
+ -DBUILD_MERGED_PLUGINS=%merged_plugins%^
  -DBUILD_TEST=%build_test%^
  -DENABLE_LOGGING=%enable_logging%^
+ -DENABLE_EXTERNAL_PLUGINS=%enable_external_plugins%^
  -DCMAKE_PREFIX_PATH:PATH="%deps_install_prefix%"^
  -DCMAKE_INSTALL_PREFIX:PATH="%rime_install_prefix%"
 

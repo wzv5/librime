@@ -66,4 +66,8 @@ string CommitHistory::repr() const {
   return result;
 }
 
+string CommitHistory::latest_text() const {
+  return empty() ? string() : back().text;
+}
+
 }  // namespace rime

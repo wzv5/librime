@@ -18,12 +18,12 @@ namespace rime {
 
 class ConfigData;
 
-class Config : public Class<Config, const string&>, public ConfigItemRef {
+class RIME_DLL Config : public Class<Config, const string&>, public ConfigItemRef {
  public:
   // CAVEAT: Config instances created without argument will NOT
   // be managed by ConfigComponent
-  RIME_DLL Config();
-  RIME_DLL virtual ~Config();
+  Config();
+  virtual ~Config();
   // instances of Config with identical config id share a copy of config data
   // in the ConfigComponent
   explicit Config(an<ConfigData> data);
@@ -32,33 +32,33 @@ class Config : public Class<Config, const string&>, public ConfigItemRef {
   bool Save();
   bool LoadFromStream(std::istream& stream);
   bool SaveToStream(std::ostream& stream);
-  RIME_DLL bool LoadFromFile(const path& file_path);
-  RIME_DLL bool SaveToFile(const path& file_path);
+  bool LoadFromFile(const path& file_path);
+  bool SaveToFile(const path& file_path);
 
   // access a tree node of a particular type with "path/to/node"
-  RIME_DLL bool IsNull(const string& path);
+  bool IsNull(const string& path);
   bool IsValue(const string& path);
-  RIME_DLL bool IsList(const string& path);
-  RIME_DLL bool IsMap(const string& path);
-  RIME_DLL bool GetBool(const string& path, bool* value);
-  RIME_DLL bool GetInt(const string& path, int* value);
-  RIME_DLL bool GetDouble(const string& path, double* value);
-  RIME_DLL bool GetString(const string& path, string* value);
-  RIME_DLL size_t GetListSize(const string& path);
+  bool IsList(const string& path);
+  bool IsMap(const string& path);
+  bool GetBool(const string& path, bool* value);
+  bool GetInt(const string& path, int* value);
+  bool GetDouble(const string& path, double* value);
+  bool GetString(const string& path, string* value);
+  size_t GetListSize(const string& path);
 
   an<ConfigItem> GetItem(const string& path);
   an<ConfigValue> GetValue(const string& path);
-  RIME_DLL an<ConfigList> GetList(const string& path);
-  RIME_DLL an<ConfigMap> GetMap(const string& path);
+  an<ConfigList> GetList(const string& path);
+  an<ConfigMap> GetMap(const string& path);
 
   // setters
   bool SetBool(const string& path, bool value);
-  RIME_DLL bool SetInt(const string& path, int value);
+  bool SetInt(const string& path, int value);
   bool SetDouble(const string& path, double value);
-  RIME_DLL bool SetString(const string& path, const char* value);
+  bool SetString(const string& path, const char* value);
   bool SetString(const string& path, const string& value);
   // setter for adding or replacing items in the tree
-  RIME_DLL bool SetItem(const string& path, an<ConfigItem> item);
+  bool SetItem(const string& path, an<ConfigItem> item);
   using ConfigItemRef::operator=;
 
  protected:

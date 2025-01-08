@@ -31,7 +31,7 @@ class Code : public vector<SyllableId> {
 
   void CreateIndex(Code* index_code);
 
-  string ToString() const;
+  RIME_DLL string ToString() const;
 };
 
 struct ShortDictEntry {

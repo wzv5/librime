@@ -31,20 +31,20 @@ class ConfigItem {
   ValueType type_ = kNull;
 };
 
-class ConfigValue : public ConfigItem {
+class RIME_DLL ConfigValue : public ConfigItem {
  public:
   ConfigValue() : ConfigItem(kScalar) {}
-  RIME_DLL ConfigValue(bool value);
-  RIME_DLL ConfigValue(int value);
-  RIME_DLL ConfigValue(double value);
-  RIME_DLL ConfigValue(const char* value);
-  RIME_DLL ConfigValue(const string& value);
+  ConfigValue(bool value);
+  ConfigValue(int value);
+  ConfigValue(double value);
+  ConfigValue(const char* value);
+  ConfigValue(const string& value);
 
   // schalar value accessors
   bool GetBool(bool* value) const;
-  RIME_DLL bool GetInt(int* value) const;
+  bool GetInt(int* value) const;
   bool GetDouble(double* value) const;
-  RIME_DLL bool GetString(string* value) const;
+  bool GetString(string* value) const;
   bool SetBool(bool value);
   bool SetInt(int value);
   bool SetDouble(double value);
@@ -59,20 +59,20 @@ class ConfigValue : public ConfigItem {
   string value_;
 };
 
-class ConfigList : public ConfigItem {
+class RIME_DLL ConfigList : public ConfigItem {
  public:
   using Sequence = vector<of<ConfigItem>>;
   using Iterator = Sequence::iterator;
 
   ConfigList() : ConfigItem(kList) {}
-  RIME_DLL an<ConfigItem> GetAt(size_t i) const;
-  RIME_DLL an<ConfigValue> GetValueAt(size_t i) const;
-  RIME_DLL bool SetAt(size_t i, an<ConfigItem> element);
+  an<ConfigItem> GetAt(size_t i) const;
+  an<ConfigValue> GetValueAt(size_t i) const;
+  bool SetAt(size_t i, an<ConfigItem> element);
   bool Insert(size_t i, an<ConfigItem> element);
-  RIME_DLL bool Append(an<ConfigItem> element);
+  bool Append(an<ConfigItem> element);
   bool Resize(size_t size);
-  RIME_DLL bool Clear();
-  RIME_DLL size_t size() const;
+  bool Clear();
+  size_t size() const;
 
   Iterator begin();
   Iterator end();
@@ -84,16 +84,16 @@ class ConfigList : public ConfigItem {
 };
 
 // limitation: map keys have to be strings, preferably alphanumeric
-class ConfigMap : public ConfigItem {
+class RIME_DLL ConfigMap : public ConfigItem {
  public:
   using Map = map<string, an<ConfigItem>>;
   using Iterator = Map::iterator;
 
   ConfigMap() : ConfigItem(kMap) {}
-  RIME_DLL bool HasKey(const string& key) const;
-  RIME_DLL an<ConfigItem> Get(const string& key) const;
-  RIME_DLL an<ConfigValue> GetValue(const string& key) const;
-  RIME_DLL bool Set(const string& key, an<ConfigItem> element);
+  bool HasKey(const string& key) const;
+  an<ConfigItem> Get(const string& key) const;
+  an<ConfigValue> GetValue(const string& key) const;
+  bool Set(const string& key, an<ConfigItem> element);
   bool Clear();
 
   Iterator begin();
